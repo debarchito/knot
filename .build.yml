@@ -1,0 +1,11 @@
+image: alpine/edge
+secrets:
+  - 60c95eb6-5bd1-468e-9716-9b1be500b202
+environment:
+  GH_USER: debarchito
+  REPO: knot
+tasks:
+  - push-to-github: |
+      cd ~/"${REPO}"
+      git config --global credential.helper store
+      git push --mirror "https://github.com/${GH_USER}/${REPO}"

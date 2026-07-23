@@ -1,0 +1,6 @@
+(include_subdirs qualified)
+
+(library
+ (name knot)
+ (public_name knot)
+ (libraries unix))
