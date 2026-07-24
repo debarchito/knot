@@ -18,7 +18,45 @@ core with bidirectional, row-polymorphic and other extensions. This project was
 a small (one-day!) experiment to get my hands dirty with Algorithm J and
 implementing type systems in general.
 
-## 1. Build and run Knot.
+## 1. A preview of Knot.
+
+```js
+❯ dune exec knot
+Knot is a pure λ-calculus reduction engine with optional type inference. Type :h for help.
+
+t> let zero = \f x. x
+...  in let succ = \n f x. f (n f x)
+...  in succ (succ zero)
+- : ('a -> 'a) -> 'a -> 'a
+- = fn x0. fn x1. x0 (x0 x1)
+
+t> :u
+Info: Turned off type inference.
+
+u> :m 1000
+Info: Maximum evaluation steps set to 1000.
+
+u> let true  = \t f. t 
+...  in let false = \t f. f 
+...  in let zero = \f x. x 
+...  in let succ = \n f x. f (n f x) 
+...  in let mult = \m n f. m (n f) 
+...  in let is_zero = \n. n (\x. false) true 
+...  in let pred = \n f x. n (\g h. h (g f)) (\u. x) (\u. u) 
+...  in let zcom = \f. fix (\self v. f self v) 
+...  in let fact = zcom (\rec n. 
+...    is_zero n 
+...      (\u. succ zero) 
+...      (\u. mult n (rec (pred n))) 
+...      (\u. u)
+...  ) 
+...  in fact (succ (succ (succ zero)))
+- = fn x0. fn x1. x0 (x0 (x0 (x0 (x0 (x0 x1)))))
+
+u>
+```
+
+## 2. Building and running Knot.
 
 As with most of my projects, you can build Knot using Nix.
 
@@ -51,7 +89,7 @@ nixpkgs.overlays = [
 environment.systemPackages = [ pkgs.knot ];
 ```
 
-## 2. Learn Knot in about 5 minutes.
+## 3. Learn Knot in about 5 minutes.
 
 If you want to explore the language by yourself, check out the
 [examples](./examples) directory. Feedback and more examples are welcome! This
@@ -59,8 +97,9 @@ is how you run them:
 
 ```fish
 dune exec knot -- examples/1_transitivity.knot
+dune exec knot -- examples/2_numbers.knot
 # This example is untyped and needs at-least 800 evaluation steps!
-dune exec knot -- examples/2_factorial.knot -u -m 800
+dune exec knot -- examples/3_factorial.knot -u -m 800
 ```
 
 That said, here's an overview of the language:
@@ -82,23 +121,28 @@ fn x y z. x z y // Same as \x. \y. \z. (x z) y
 (\x. x) (\y. y)
 
 // let-polymorphism in typed mode.
-let id = \x. x in id id // Works and outputs \x. x
-\id. id id // Occurs check failure (infinite type) in typed mode!
+let id = \x. x
+in id id // Works and outputs \x. x
+
+// let-polymorphism is required because this fails in typed mode:
+\id. id id // Occurs check failure (infinite type)
 
 // Application chain using let-polymorphism.
-let apply = \f x. f x in apply (\a. a)
+let apply = \f x. f x
+in apply (\a. a)
 
 // Fixed point operator enables recursive functions in typed mode without
 // occurs-check failures. Fix has the signature ('a -> 'a) -> 'a
 // NOTE: This function's runtime will scale with the maximum evaluation
 // steps set!
-let loop = fix (\self. \v. self v) in loop
+let loop = fix (\self. \v. self v)
+in loop
 ```
 
 That's all! It's a very small pure functional language; it has no built-in data
 types or primitives other than lambdas and the fix operator. This means
 everything must be represented using Church encodings (brace yourselves!).
 
-## 3. Licensing.
+## 4. Licensing.
 
 Knot is made available under the [MIT](./LICENSE) license.

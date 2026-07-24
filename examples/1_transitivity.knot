@@ -1,2 +1,2 @@
-let trans = \f. \g x. g (f x)
+let trans = \f g x. g (f x)
 in trans

@@ -1,0 +1,15 @@
+let true  = \t f. t 
+in let false = \t f. f 
+in let zero = \f x. x 
+in let succ = \n f x. f (n f x) 
+in let mult = \m n f. m (n f) 
+in let is_zero = \n. n (\x. false) true 
+in let pred = \n f x. n (\g h. h (g f)) (\u. x) (\u. u) 
+in let zcom = \f. fix (\self v. f self v) 
+in let fact = zcom (\rec n. 
+  is_zero n 
+    (\u. succ zero) 
+    (\u. mult n (rec (pred n))) 
+    (\u. u)
+) 
+in fact (succ (succ (succ zero)))

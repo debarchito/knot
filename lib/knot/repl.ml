@@ -277,7 +277,7 @@ let run () =
                 | Some n when n > 0 ->
                     max_steps := n;
                     Printf.printf "%s Maximum evaluation steps set to %d.\n\n" 
-                      (Color.fmt Color.green "Updated:") n
+                      (Color.fmt Color.cyan "Info:") n
                 | _ ->
                     Printf.printf "%s Please provide a positive integer (e.g., :m 100).\n\n" 
                       (Color.fmt (Color.bold ^ Color.red) "Error:"))

@@ -1,0 +1,3 @@
+let zero = \f x. x
+in let succ = \n f x. f (n f x)
+in succ (succ zero)
