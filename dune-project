@@ -15,8 +15,7 @@
 
 (package
  (name knot)
- (synopsis
-  "A pure lambda λ-calculus reduction engine with optional type inference")
+ (synopsis "A pure λ-calculus reduction engine with optional type inference")
  (description
   "Knot is a pure λ-calculus reduction engine with optional type inference using Algorithm J")
  (depends

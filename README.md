@@ -1,16 +1,16 @@
 ## 0. What is Knot?
 
 Knot is a pure λ-calculus reduction engine with optional type inference using
-Algorithm J. It implements both untyped and simply-typed λ-calculus. It
-translates high-level surface syntax into nameless core terms using De Bruijn
-indices, which enables capture-avoiding substitution without explicit variable
-renaming during evaluation.
+Algorithm J. It implements both untyped and simply-typed (implicitly)
+λ-calculus. It translates high-level surface syntax into nameless core terms
+using De Bruijn indices, which enables capture-avoiding substitution without
+explicit variable renaming during evaluation.
 
 I always wanted to experiment with β-reduction, and building a small reduction
-engine sounded like fun. While untyped lambda calculus is neat, I specifically
-wanted to implement the simply-typed variant. Although the typed subset isn't
-Turing complete, it turned out great and evolved into a small proof assistant
-for rudimentary propositional logic via the Curry-Howard Isomorphism.
+engine sounded like fun. While untyped λ-calculus is neat, I specifically wanted
+to implement the simply-typed subsystem (STLC). STLC isn't Turing complete
+because it enforces strong normalization; but it is a small proof assistant for
+rudimentary propositional logic via the Curry-Howard Isomorphism.
 
 [Miru](https://git.sr.ht/~debarchito/miru) the language I'm currently
 researching, has a rather complicated type system; it uses Hindley-Milner at its
@@ -63,9 +63,9 @@ dune exec knot -- examples/1_transitivity.knot
 dune exec knot -- examples/2_factorial.knot -u -m 800
 ```
 
-Said that, here's an overview of the language:
+That said, here's an overview of the language:
 
-```lambda
+```js
 // An abstraction that takes one argument and return it. 
 \x. x
 
